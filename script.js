@@ -6,18 +6,18 @@ let score = 0;
 
 function setup() {
   createCanvas(400, 400); // Create a 400x400 canvas
-  frameRate(gameSpeed); // Set initial frame rate (game speed)
-  snake = new Snake(); // Create a new snake
-  food = createFood(); // Create the first food item
+  frameRate(gameSpeed); // Set the frame rate (game speed)
+  snake = new Snake(); // Initialize the snake
+  food = createFood(); // Place the first food
 }
 
 function draw() {
-  background(51); // Clear the screen with a dark background
+  background(51); // Clear the screen
 
   if (snake.eat(food)) { // Check if the snake eats the food
     food = createFood(); // Create new food
     score++; // Increase score
-    if (score % 5 == 0) { // Every 5 points, increase game speed
+    if (score % 5 === 0) { // Increase game speed every 5 points
       gameSpeed += 2;
       frameRate(gameSpeed);
     }
@@ -26,20 +26,14 @@ function draw() {
   snake.update(); // Update the snake's position
   snake.show(); // Draw the snake
 
-  fill(255, 0, 100); // Set the fill color for the food
+  fill(255, 0, 100); // Set food color
   rect(food.x, food.y, gridSize, gridSize); // Draw the food
 
-  displayScore(); // Display the current score
+  textSize(18); // Set text size for the score
+  fill(255); // Set text color
+  text("Score: " + score, 10, 20); // Display the score
 
   if (snake.isDead()) { // Check if the snake has collided with itself
-    noLoop(); // Stop the game loop
-    textSize(32);
-    textAlign(CENTER, CENTER);
-    fill(255);
-    text("Game Over", width / 2, height / 2); // Display "Game Over"
-  }
-}
- if (snake.isDead()) { // Check if the snake has collided with itself
     noLoop(); // Stop the game loop
     textSize(32);
     textAlign(CENTER, CENTER);
@@ -49,6 +43,7 @@ function draw() {
     text("Press Space to Restart", width / 2, height / 2 + 40); // Display restart instruction
   }
 }
+
 function keyPressed() {
   // Change snake direction based on arrow keys
   if (keyCode === UP_ARROW && snake.ySpeed === 0) {
@@ -59,6 +54,8 @@ function keyPressed() {
     snake.setDirection(-1, 0);
   } else if (keyCode === RIGHT_ARROW && snake.xSpeed === 0) {
     snake.setDirection(1, 0);
+  } else if (key === ' ') { // Detect space bar press
+    resetGame(); // Call the reset game function
   }
 }
 
@@ -69,11 +66,13 @@ function createFood() {
   return createVector(floor(random(cols)) * gridSize, floor(random(rows)) * gridSize);
 }
 
-function displayScore() {
-  // Display the current score
-  textSize(18);
-  fill(255);
-  text("Score: " + score, 10, 20);
+function resetGame() {
+  score = 0; // Reset the score
+  gameSpeed = 10; // Reset the game speed
+  frameRate(gameSpeed); // Reset the frame rate
+  snake = new Snake(); // Create a new snake
+  food = createFood(); // Create new food
+  loop(); // Restart the game loop
 }
 
 class Snake {
