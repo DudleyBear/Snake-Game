@@ -39,7 +39,16 @@ function draw() {
     text("Game Over", width / 2, height / 2); // Display "Game Over"
   }
 }
-
+ if (snake.isDead()) { // Check if the snake has collided with itself
+    noLoop(); // Stop the game loop
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    fill(255);
+    text("Game Over", width / 2, height / 2); // Display "Game Over"
+    textSize(16);
+    text("Press Space to Restart", width / 2, height / 2 + 40); // Display restart instruction
+  }
+}
 function keyPressed() {
   // Change snake direction based on arrow keys
   if (keyCode === UP_ARROW && snake.ySpeed === 0) {
